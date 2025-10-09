@@ -35,3 +35,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+.gemini/oauth_creds.json
+.terraform/
+.nvm/
