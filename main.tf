@@ -1,11 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = var.tf_backend_bucket
-    key    = "terraform.tfstate"
-    region = "ap-northeast-1"
-  }
-}
-
 provider "aws" {
   region = "us-west-2"
 }
