@@ -10,12 +10,89 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-0c5204531f799e0c6" # Amazon Linux 2023
-  instance_type = "t3.micro"
+# ===========================
+# 最新の Amazon Linux 2023 AMI を取得
+# ===========================
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+
+  owners = ["137112412989"] # Amazon公式
+}
+
+# ===========================
+# セキュリティグループ設定
+# ===========================
+resource "aws_security_group" "web_sg" {
+  name        = "CL_iwasaki_sg"
+  description = "Security Group with intentional holes"
+  vpc_id      = "vpc-e6a75a81"
+
+  # SSH許可（自分の管理用IP）
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["118.237.255.201/32"]
+    description = "Allow SSH from admin IP only"
+  }
+
+  # HTTP許可
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["118.237.255.201/32"]
+    description = "Allow HTTP access from specific IP"
+  }
+
+  # SSH許可（他サーバーから）
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["172.31.33.219/32"]
+    description = "Allow SSH from my server IP"
+  }
+
+  # すべてのアウトバウンド通信を許可
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }
+}
+
+# ===========================
+# EC2 インスタンス作成
+# ===========================
+resource "aws_instance" "webap_server" {
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t3.micro"
+  key_name               = "CL_iwasaki_j.pem"
+  subnet_id              = "subnet-b56457c3"
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  monitoring             = true
+  ebs_optimized          = true
+
+  root_block_device {
+    encrypted = true
+  }
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 
   tags = {
-    Name = "terraform-ci-demo"
+    Name = "CL_iwasaki_j_learn_terraform"
   }
 }
 
