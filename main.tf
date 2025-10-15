@@ -75,7 +75,7 @@ resource "aws_security_group" "web_sg" {
 resource "aws_instance" "webap_server" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t3.micro"
-  key_name               = "CL_iwasaki_j.pem"
+  key_name               = "CL_iwasaki_j"
   subnet_id              = "subnet-0e8be82413630b852"
   vpc_security_group_ids = [aws_security_group.web_sg.id]
   monitoring             = true
