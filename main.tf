@@ -96,3 +96,8 @@ resource "aws_instance" "webap_server" {
   }
 }
 
+output "instance_public_ip" {
+  description = "The public IP of the web server"
+  value       = aws_instance.webap_server.public_ip
+}
+
