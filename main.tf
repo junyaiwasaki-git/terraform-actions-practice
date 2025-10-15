@@ -30,7 +30,7 @@ data "aws_ami" "amazon_linux" {
 resource "aws_security_group" "web_sg" {
   name        = "CL_iwasaki_sg"
   description = "Security Group with intentional holes"
-  vpc_id      = "vpc-e6a75a81"
+  vpc_id      = "vpc-0f9e349a1dfd9f1bf"
 
   # SSH許可（自分の管理用IP）
   ingress {
