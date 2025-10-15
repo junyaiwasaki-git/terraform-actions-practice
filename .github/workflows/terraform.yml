@@ -56,7 +56,7 @@ jobs:
           RUNNER_IP=$(curl -s ifconfig.me)
           echo "Allowing SSH from $RUNNER_IP"
           aws ec2 authorize-security-group-ingress \
-            --group-id ${{ env.sg_id }} \
+            --group-id $SG_ID \
             --protocol tcp \
             --port 22 \
             --cidr $RUNNER_IP/32
@@ -87,7 +87,7 @@ jobs:
           RUNNER_IP=$(curl -s ifconfig.me)
           echo "Revoking SSH from $RUNNER_IP"
           aws ec2 revoke-security-group-ingress \
-            --group-id ${{ env.sg_id }} \
+            --group-id $SG_ID \
             --protocol tcp \
             --port 22 \
             --cidr $RUNNER_IP/32
