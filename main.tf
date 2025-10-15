@@ -41,6 +41,14 @@ resource "aws_security_group" "web_sg" {
     description = "Allow SSH from admin IP only"
   }
 
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["118.237.255.201/32"]
+    description = "Allow Tomcat from admin IP"
+  }
+
   # HTTP許可
   ingress {
     from_port   = 80
