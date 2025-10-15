@@ -34,7 +34,7 @@
     - name: Download Tomcat
       ansible.builtin.get_url:
         dest: /home/ec2-user/apache-tomcat-9.0.109.tar.gz
-        url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.109/bin/apache-tomcat-9.0.109.tar.gz
+        url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.110/bin/apache-tomcat-9.0.110.tar.gz
 
     - name: Extract Tomcat
       ansible.builtin.unarchive:
