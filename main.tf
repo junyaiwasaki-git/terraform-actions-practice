@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "iwasakij-tfstate-bucket" # ← あなたのS3バケット名
-    key    = "terraform.tfstate"
+    key    = "project1/terraform.tfstate"
     region = "us-west-2"
   }
 }
